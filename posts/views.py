@@ -12,6 +12,15 @@ def posts_view(request):
         'products': products
     })
 
+def product_detail_view(request, id):
+    if request.method == 'GET':
+        product = Product.objects.get(id=id)
 
+        context = {
+            'product': product,
+            'reviews': product.review_set.all()
+        }
+
+        return render(request, 'product/detail.html', context=context)
 
 
