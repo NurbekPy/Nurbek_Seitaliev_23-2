@@ -2,6 +2,10 @@ from django.db import models
 
 # Create your models here.
 
+class Category(models.Model):
+    title = models.CharField(max_length=55)
+
+
 class Product(models.Model):
     image = models.ImageField(blank=True, null=True)
     title = models.CharField(max_length=255)
@@ -11,6 +15,7 @@ class Product(models.Model):
     pages = models.IntegerField()
     age = models.IntegerField()
     created_date = models.DateField(auto_now=True)
+    categories = models.ManyToManyField(Category)
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

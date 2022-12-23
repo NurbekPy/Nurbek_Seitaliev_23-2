@@ -1,0 +1,11 @@
+{% extends 'layouts/index.html' %}
+
+{% block content %}
+    {% for category in categories %}
+        <h6>
+            <a href="/posts/?category_id={{ category.id }}">
+                {{ category.title }}
+            </a>
+        </h6>
+    {% endfor %}
+{% endblock %}
