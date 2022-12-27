@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from posts.models import Product, Category
 # Create your views here.
 
@@ -40,3 +40,27 @@ def categories_view(request):
         }
 
         return render(request, 'categories/index.html', context=context)
+
+def categories_create_view(request):
+    if request.method == 'GET':
+        return render(request, 'categories/create.html')
+
+    if request.method == 'POST':
+        errors = {}
+
+        if len(request.POST.get('title')) < 8:
+            errors['title_error'] = 'min lenght in field title 8!'
+
+        if len(request.POST.get('description')) < 1:
+            errors['description_error'] = 'this field is required'
+
+        if len(errors.keys()) > 0:
+            return render(request, 'categories/create.html', context=errors)
+
+        Product.objects.create(
+            title=request.POST.get('title'),
+            description=request.POST.get('description'),
+            author=request.POST.get('author')
+        )
+        return redirect('/product/')
+
