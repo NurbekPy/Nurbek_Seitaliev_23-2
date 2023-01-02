@@ -34,6 +34,7 @@ def product_detail_view(request, id):
 
         if form.is_valid():
             Review.objects.create(
+                writer=request.user,
                 product_id=id,
                 text=form.cleaned_data.get('text')
             )
@@ -72,7 +73,6 @@ def categories_create_view(request):
         form = CategoryCreateForm(data=request.POST)
 
         if form.is_valid():
-
             Product.objects.create(
                 writer=request.user,
                 title=form.cleaned_data.get('title'),
