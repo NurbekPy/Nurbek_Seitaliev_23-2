@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from posts.models import Product, Category
+from posts.models import Product, Category, Review
+from posts.forms import CategoryCreateForm, ReviewCreateForm
+
 # Create your views here.
 
 def main_view(request):
@@ -19,11 +21,29 @@ def product_detail_view(request, id):
         context = {
             'product': product,
             'reviews': product.review_set.all(),
-            'categories': product.categories.all()
+            'categories': product.categories.all(),
+            'review_form': ReviewCreateForm
         }
 
         return render(request, 'product/detail.html', context=context)
 
+    if request.method == 'POST':
+        product = Product.objects.get(id=id)
+        form = ReviewCreateForm(data=request.POST)
+
+        if form.is_valid():
+            Review.objects.create(
+                product_id=id,
+                text=form.cleaned_data.get('text')
+            )
+            return redirect(f'/product/{id}')
+        else:
+            return render(request, 'product/detail.html', context={
+                'product': product,
+                'reviews': product.review_set.all(),
+                'categories': product.categories.all(),
+                'review_form': form
+            })
 
 def categories_view(request):
     if request.method == 'GET':
@@ -43,24 +63,22 @@ def categories_view(request):
 
 def categories_create_view(request):
     if request.method == 'GET':
-        return render(request, 'categories/create.html')
+        return render(request, 'categories/create.html', context={
+            'form': CategoryCreateForm
+        })
 
     if request.method == 'POST':
-        errors = {}
+        form = CategoryCreateForm(data=request.POST)
 
-        if len(request.POST.get('title')) < 8:
-            errors['title_error'] = 'min lenght in field title 8!'
+        if form.is_valid():
 
-        if len(request.POST.get('description')) < 1:
-            errors['description_error'] = 'this field is required'
-
-        if len(errors.keys()) > 0:
-            return render(request, 'categories/create.html', context=errors)
-
-        Product.objects.create(
-            title=request.POST.get('title'),
-            description=request.POST.get('description'),
-            author=request.POST.get('author')
-        )
-        return redirect('/product/')
-
+            Product.objects.create(
+                title=form.cleaned_data.get('title'),
+                description=form.cleaned_data.get('description'),
+                author=form.cleaned_data.get('author')
+            )
+            return redirect('/posts/')
+        else:
+            return render(request, 'categories/create.html', context={
+                'form': form
+            })

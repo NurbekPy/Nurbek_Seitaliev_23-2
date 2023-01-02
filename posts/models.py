@@ -11,9 +11,6 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     description = models.TextField()
-    publish_year = models.IntegerField()
-    pages = models.IntegerField()
-    age = models.IntegerField()
     created_date = models.DateField(auto_now=True)
     categories = models.ManyToManyField(Category)
 
