@@ -11,7 +11,8 @@ def posts_view(request):
     if request.method == 'GET':
         products = Product.objects.all()
     return render(request, 'product/product.html', context={
-        'products': products
+        'products': products,
+        'user': None if request.user.is_anonymous else request.user
     })
 
 def product_detail_view(request, id):

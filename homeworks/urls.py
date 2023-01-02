@@ -18,7 +18,7 @@ from django.urls import path
 from posts.views import main_view, posts_view, product_detail_view, categories_view, categories_create_view
 from homeworks import settings
 from django.conf.urls.static import static
-from users.views import login_view
+from users.views import login_view, logout_view, register_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +28,9 @@ urlpatterns = [
     path('categories/create/', categories_create_view),
     path('categories/', categories_view),
 
-    path('users/login', login_view)
+    path('users/login/', login_view),
+    path('users/logout/', logout_view),
+    path('users/register/', register_view)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
