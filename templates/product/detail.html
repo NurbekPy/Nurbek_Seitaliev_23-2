@@ -30,7 +30,10 @@
     </style>
     <div class='product_block'>
             <img src="/media/{{ product.image }}/" alt="not found :(">
-        <h1>{{ product.title }}</h1>
+        <div style="display: flex; justify-content: space-between">
+            <h1>{{ product.title }}</h1>
+            <h1>{{ product.writer.username }}</h1>
+        </div>
         <h5>{{ product.description }}</h5>
         <div class="dates">
             <h5>{{ product.created_date }}</h5>

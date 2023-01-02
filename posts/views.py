@@ -74,6 +74,7 @@ def categories_create_view(request):
         if form.is_valid():
 
             Product.objects.create(
+                writer=request.user,
                 title=form.cleaned_data.get('title'),
                 description=form.cleaned_data.get('description'),
                 author=form.cleaned_data.get('author')
